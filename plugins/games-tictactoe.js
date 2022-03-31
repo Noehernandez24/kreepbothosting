@@ -2,7 +2,7 @@ import TicTacToe from '../lib/tictactoe.js'
 
 let handler = async (m, { conn, usedPrefix, command, text }) => {
     conn.game = conn.game ? conn.game : {}
-    if (Object.values(conn.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Kamu masih didalam game'
+    if (Object.values(conn.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Todavía estás en el juego'
     let room = Object.values(conn.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
     // m.reply('[WIP Feature]')
     if (room) {
@@ -33,10 +33,10 @@ ${arr.slice(6).join('')}
 Menunggu @${room.game.currentTurn.split('@')[0]}
 Ketik *nyerah* untuk nyerah
 `.trim()
-        if (room.x !== room.o) await conn.sendButton(room.x, str, author, ['Nyerah', 'nyerah'], m, {
+        if (room.x !== room.o) await conn.sendButton(room.x, str, author, ['Darse por vencido', 'nyerah'], m, {
             mentions: conn.parseMention(str)
         })
-        await conn.sendButton(room.o, str, author, ['Nyerah', 'nyerah'], m, {
+        await conn.sendButton(room.o, str, author, ['Darse por vencido', 'nyerah'], m, {
             mentions: conn.parseMention(str)
         })
     } else {
@@ -48,7 +48,7 @@ Ketik *nyerah* untuk nyerah
             state: 'WAITING'
         }
         if (text) room.name = text
-        m.reply('Menunggu partner' + (text ? ` mengetik command dibawah ini
+        m.reply('Esperando a que el compañero' + (text ? ` escriba el siguiente comando
 ${usedPrefix}${command} ${text}` : ''))
         conn.game[room.id] = room
     }

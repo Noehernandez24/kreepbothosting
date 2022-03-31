@@ -63,16 +63,16 @@ export async function before(m) {
 ${arr.slice(0, 3).join('')}
 ${arr.slice(3, 6).join('')}
 ${arr.slice(6).join('')}
-${isWin ? `@${winner.split('@')[0]} Menang! (+${winScore} XP)` : isTie ? `Game berakhir (+${playScore} XP)` : `Giliran ${['❌', '⭕'][1 * room.game._currentTurn]} (@${room.game.currentTurn.split('@')[0]})`}
-❌: @${room.game.playerX.split('@')[0]}
-⭕: @${room.game.playerO.split('@')[0]}
-Ketik *nyerah* untuk nyerah
+${isWin ? `@${winner.split('%name')[0]} ¡La partida a finalizado! (+${winScore} XP)` : isTie ? `Game berakhir (+${playScore} XP)` : `Es el turno de ${['❌', '⭕'][1 * room.game._currentTurn]} (@${room.game.currentTurn.split('@')[0]})`}
+❌: @${room.game.playerX.split('%name')[0]}
+⭕: @${room.game.playerO.split('%name')[0]}
+Haga click en *Rendirse* para rendirse
 Room ID: ${room.id}
 `.trim()
         let users = global.db.data.users
         if ((room.game._currentTurn ^ isSurrender ? room.x : room.o) !== m.chat)
             room[room.game._currentTurn ^ isSurrender ? 'x' : 'o'] = m.chat
-        const btn = isTie ? ['TicTacToe', '/ttt'] : ['Nyerah', 'nyerah']
+        const btn = isTie ? ['TicTacToe', '/ttt'] : ['Rendirse', 'nyerah']
         if (room.x !== room.o)
             await this.sendButton(room.x, str, author, btn, m, {
                 mentions: this.parseMention(str)
